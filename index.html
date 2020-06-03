@@ -2000,12 +2000,13 @@
         var ma_arr = [];
 
         var nbalance = (lbalance * tdasa[indexcurrent]);
+        console.log(nlord); 
         year = (ayear-(byear+nbalance)); indexcurrent++; ta = 0; 
         for(var i=0; i<9; i++) {
             if(indexcurrent > 8) indexcurrent = 0;
             ta = tdasa[indexcurrent];
             // Math.abs(balance * (tdasa[indexcurrent]/solaryear))
-            // if(ta > year) {break; } 
+            if(ta > year) {break; } 
             ma_arr.push(lord[indexcurrent] + " Dasa: " + dec2date(Math.abs(balance * (tdasa[indexcurrent]/solaryear)))); 
             indexcurrent++;
         }        
@@ -2580,7 +2581,6 @@
           else 
               canvas.font = '8pt Arial';
         */
-        console.log(house[1]);
         canvas.fillText(house[1].replace(/As/g, ''), pos[0]+xoffset, pos[1]);
         canvas.fillText(house[2].replace(/As/g, ''), pos[2]+xoffset, pos[3]);
         canvas.fillText(house[3].replace(/As/g, ''), pos[4]+xoffset, pos[5]);
@@ -2603,25 +2603,7 @@
         canvas.fillStyle = "#000000"; 
         canvas.fillText("D9 - Navamsa",xoffset, 215);
     }
-    
-    function draw_smile (canvas) 
-    {
-        /*  hier should be navamsa chart, but is not yet implemented 
-            if you have the knowledge 'and' the will, feel free to help :)
-         */
-        canvas.beginPath();
-        canvas.strokeStyle = '606060';
-        canvas.arc(456, 55, 17, 0.9*Math.PI, 2.1*Math.PI, true);
-        canvas.lineWidth = 0.1;
-        canvas.stroke();
-        canvas.beginPath();
-        canvas.arc(455, 59, 21, -Math.PI, Math.PI, true);
-        canvas.lineWidth = 0.1;
-        canvas.stroke();
-        canvas.fillStyle = 'F2F2F2';
-        canvas.fillText('.',447 ,54);
-        canvas.fillText('.',463 ,54);
-    }    
+       
 </script>
 
 </body></html> <!-- The End -->
