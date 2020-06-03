@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Natal/Kundli</title>
+        <title>Rashi/Navamsha/Dasha</title>
         <link  rel="stylesheet" href="kundli.css">
         <meta name="description"   content="jyotish birth chart">
         <meta name="keywords"    content="jyotish,vedic astrology,birth chart,rasi,navamsa,astronomy">
@@ -1949,7 +1949,7 @@
             return hms ? dec2hms(UT) : (UT);
     }
 
-    function calc_all_vimsottari_dasa (d)
+    function calc_all_vimsottari_dasa ()
     {
         var lord   = ["Me","Ke","Ve","Su","Mo","Ma","Ra","Ju","Sa"];
         var tdasa  = [6209.116431424950, 2556.695001174980, 7304.842860499940,
@@ -1996,47 +1996,61 @@
         var ayear = (today.getFullYear()*solaryear)+((today.getMonth()+1)*30)+today.getDate();
         var byear = (date.getFullYear()*solaryear)+((date.getMonth()+1)*30)+date.getDate();
         var tyear = ayear - byear;
-        
-        /* Vimsottari Antardasa */
-        for(var i=0; i<9; i++) {
-            if (index > 8) index = 0;
-            ta += tdasa[index]/solaryear/120;
-            if(ta > balance) { alord = lord[index]; break; }
-            index++; 
-        }   
-        /* Vimsottari Pratyantardasa */
-        ta = 1 - ((ta - balance) / (tdasa[index]/solaryear/120)); 
-        for(var i=0; i<9; i++) {
-            if(index > 8) index = 0;
-            tp += tdasa[index]/solaryear/120;
-            if(tp > ta) { plord = lord[index]; break; } 
-            index++;
-        }
+
         /* Current Vimsottari Maha Dasa */
+
+        var ma_arr = [];
+
         var nbalance = (lbalance * tdasa[indexcurrent]);
         year = (ayear-(byear+nbalance)); indexcurrent++; ta = 0; 
         for(var i=0; i<9; i++) {
             if(indexcurrent > 8) indexcurrent = 0;
             ta += tdasa[indexcurrent];
-            if(ta > year) { cmlord = lord[indexcurrent]; break; } 
+            ma_arr.push(lord[indexcurrent] + " Dasa: " + dec2date(ta)) ;
             indexcurrent++;
-        }
-        /* Current Vimsottari Antardasa */
-        year = 1 - (ta - year)/tdasa[indexcurrent]; ta = 0;
-        for(var i=0; i<9; i++) {
-            if(indexcurrent > 8) indexcurrent = 0;
-            ta += tdasa[indexcurrent]/solaryear/120;
-            if(ta > year) { calord = lord[indexcurrent]; break; } 
-            indexcurrent++;
-        }
-        /* Current Vimsottari Pratyantardasa */
-        tp = 0; ta = 1 - ((ta - year) / (tdasa[indexcurrent]/solaryear/120)); 
-        for(var i=0; i<9; i++) {
-            if(indexcurrent > 8) indexcurrent = 0;
-            tp += tdasa[indexcurrent]/solaryear/120;
-            if(tp > ta) { cplord = lord[indexcurrent]; break; } 
-            indexcurrent++;
-        }
+        }        
+        
+        // /* Vimsottari Antardasa */
+        // for(var i=0; i<9; i++) {
+        //     if (index > 8) index = 0;
+        //     ta += tdasa[index]/solaryear/120;
+        //     if(ta > balance) { alord = lord[index]; break; }
+        //     index++; 
+        // }   
+        // /* Vimsottari Pratyantardasa */
+        // ta = 1 - ((ta - balance) / (tdasa[index]/solaryear/120)); 
+        // for(var i=0; i<9; i++) {
+        //     if(index > 8) index = 0;
+        //     tp += tdasa[index]/solaryear/120;
+        //     if(tp > ta) { plord = lord[index]; break; } 
+        //     index++;
+        // }
+        // /* Current Vimsottari Maha Dasa */
+        // var nbalance = (lbalance * tdasa[indexcurrent]);
+        // year = (ayear-(byear+nbalance)); indexcurrent++; ta = 0; 
+        // for(var i=0; i<9; i++) {
+        //     if(indexcurrent > 8) indexcurrent = 0;
+        //     ta += tdasa[indexcurrent];
+        //     if(ta > year) { cmlord = lord[indexcurrent]; break; } 
+        //     indexcurrent++;
+        // }
+
+        // /* Current Vimsottari Antardasa */
+        // year = 1 - (ta - year)/tdasa[indexcurrent]; ta = 0;
+        // for(var i=0; i<9; i++) {
+        //     if(indexcurrent > 8) indexcurrent = 0;
+        //     ta += tdasa[indexcurrent]/solaryear/120;
+        //     if(ta > year) { calord = lord[indexcurrent]; break; } 
+        //     indexcurrent++;
+        // }
+        // /* Current Vimsottari Pratyantardasa */
+        // tp = 0; ta = 1 - ((ta - year) / (tdasa[indexcurrent]/solaryear/120)); 
+        // for(var i=0; i<9; i++) {
+        //     if(indexcurrent > 8) indexcurrent = 0;
+        //     tp += tdasa[indexcurrent]/solaryear/120;
+        //     if(tp > ta) { cplord = lord[indexcurrent]; break; } 
+        //     indexcurrent++;
+        // }
         
         var tstr   =  dec2date (etime);
         
@@ -2051,13 +2065,15 @@
         nstr    += "/";
         nstr    += plord; //    P.Lord
         nstr    += "     ";
-        nstr    += cmlord;// C. M.Lord
-        nstr    += "/";
-        nstr    += calord;// C. A.Lord
-        nstr    += "/";
-        nstr    += cplord;// C. P.Lord
+        // nstr    += cmlord;// C. M.Lord
+        // nstr    += "/";
+        // nstr    += calord;// C. A.Lord
+        // nstr    += "/";
+        // nstr    += cplord;// C. P.Lord
+
         
-        return d ? tstr+" "+nowstr : nstr;
+        
+        return ma_arr;
     }    
     
     function calc_vimsottari_dasa (d)
@@ -2198,7 +2214,7 @@
         else if (x > 600 && x < 621 && y > 610 && y < 623 ) {
              if (forward <= 0)  forward = 2;
              mychart.clearRect (300, 0, 300, 200);
-             draw_empty_chart (mychart,canvas_chart,330,0,0.2);
+             draw_empty_chart (mychart,canvas_chart,330,0);
              draw_division_chart (mychart,division[forward-2],division[forward-1],d+index[forward-1]);
              forward -= 2; 
             
@@ -2206,7 +2222,7 @@
         else if(x > 624 && x < 645 && y > 610 && y < 623 ) {
              if (forward >= 10)  forward = 8;
              mychart.clearRect (300, 0, 300, 200);
-             draw_empty_chart (mychart,canvas_chart,330,0,0.2);
+             draw_empty_chart (mychart,canvas_chart,330,0);
              draw_division_chart (mychart,division[forward],division[forward+1],d+index[forward]);
              forward += 2;  
         }
@@ -2239,11 +2255,11 @@
 
         
         
-        draw_empty_chart (mychart,canvas_chart,0,0,0.2);
+        draw_empty_chart (mychart,canvas_chart,0,0);
         draw_zodiacs (mychart);
         draw_houses (mychart);
         
-        draw_empty_chart (mychart,canvas_chart,330,0,0.2);
+        draw_empty_chart (mychart,canvas_chart,330,0);
         draw_division_chart (mychart,mynavamsaz,mynavamsah,'');
 
         draw_info (myinfo,canvas_info,transit);
@@ -2279,7 +2295,7 @@
     {
         canvas.font = '8pt Arial';
         canvas.textAlign = 'center';
-        canvas.fillStyle = 'blue';
+        canvas.fillStyle = 'rgb(0,0,255,0.6)';
         
         var pos=[125,53,  62,13,   26,54,   62,104, 
                  26,154,  62,195,  125,154, 188,195, 
@@ -2303,12 +2319,13 @@
         canvas.fillText(mybhavas[11], pos[20],pos[21]); 
         canvas.fillText(mybhavas[12], pos[22],pos[23]);
     }
+
     
     function draw_info (canvas,canvas_info,transit) 
     {
         canvas.font = '9pt Arial';
         canvas.textAlign = 'left';
-        canvas.fillStyle = 'rgb(128,0,0, 1)'; //404040
+        canvas.fillStyle = 'rgb(0,0,0,1)'; //404040
         var today = new Date();
         
         canvas.clearRect (0, 0, canvas_info.width, canvas_info.height);
@@ -2330,6 +2347,8 @@
         canvas_info.addEventListener('touchend',   function(e)  {
            e.preventDefault();
         });
+
+
  
         var y=10;
         for (var i=0; i<=9; i++) {
@@ -2467,16 +2486,22 @@
            e.preventDefault();
         });
 
-        canvas.fillText("Dasa:"+calc_vimsottari_dasa(false), 2, 10);
-        canvas.fillText("Dasa:"+calc_vimsottari_dasa(true),  2, 25);
+        var maarr = calc_all_vimsottari_dasa();
+
+        var i;
+        for (i = 0; i < maarr.length; i++) {
+          text = maarr[i];
+          canvas.fillText(text, 2 , 20 * i + 20);
+        }
+
     }    
     
-    function draw_empty_chart (canvas,canvas_chart,_x,_y, lwidth) 
+    function draw_empty_chart (canvas,canvas_chart,_x,_y) 
     {
-        canvas.lineWidth = lwidth;
+        canvas.lineWidth = 0.4;
         canvas.strokeStyle = '000000';
         canvas.shadowColor="black";
-        canvas.shadowBlur = 0;
+        canvas.shadowBlur = 1;
         
         canvas_chart.addEventListener('contextmenu',function(e) {
            e.preventDefault();
@@ -2547,7 +2572,7 @@
                  26,154,  62,195,  125,154, 188,195, 
                  224,154, 189,104, 224,54,  188,13 ];
  
-        canvas.fillStyle = "rgb(139,69,19,1)";
+        canvas.fillStyle = "rgb(255,0,0,0.6)";
         /*if (mybhavas[i].length > 8) 
               canvas.font = '7pt Arial';
           else 

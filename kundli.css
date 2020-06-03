@@ -197,24 +197,24 @@ article p:first-of-type {
 }
 
 button {
-    border-top: 1px solid #96d1f8;
-    background: #96a6b0;
-    background: -webkit-gradient(linear, left top, left bottom, from(#fcfcfc), to(#96a6b0));
+    /* border-top: 1px solid #96d1f8;
+    background: #96a6b0; */
+    /* background: -webkit-gradient(linear, left top, left bottom, from(#fcfcfc), to(#96a6b0));
     background: -webkit-linear-gradient(top, #fcfcfc, #96a6b0);
     background: -moz-linear-gradient(top, #fcfcfc, #96a6b0);
     background: -ms-linear-gradient(top, #fcfcfc, #96a6b0);
-    background: -o-linear-gradient(top, #fcfcfc, #96a6b0);
+    background: -o-linear-gradient(top, #fcfcfc, #96a6b0); */
     padding: 2px 10px;
     width: 170px;
     min-height: 13px;
     -webkit-border-radius: 13px;
     -moz-border-radius: 13px;
-    border-radius: 13px;
-    -webkit-box-shadow: rgba(0,0,0,1) 0 1px 0;
+    border-radius: 6px;
+    /* -webkit-box-shadow: rgba(0,0,0,1) 0 1px 0;
     -moz-box-shadow: rgba(0,0,0,1) 0 1px 0;
     box-shadow: rgba(0,0,0,1) 0 1px 0;
     text-shadow: rgba(0,0,0,.4) 0 1px 0;
-    color: white;
+    color: white; */
     font-size: 14px;
     font-family: Georgia, serif;
     text-decoration: none;
@@ -222,14 +222,11 @@ button {
 }
 
 button:hover {
-    border-top-color: #88a6ba;
-    background: #88a6ba;
-    color: #ccc;
+    color: #000000;
 }
 
 button:active {
-    border-top-color: #88a3b5;
-    background: #88a3b5;
+    color: #000000;
 }
 
 .ribbon {
