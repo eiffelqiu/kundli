@@ -25,7 +25,7 @@
 
 
 <section>
-    <h1>Enter Birth Data:</h1>
+    <h1>Enter Birth Info:</h1>
     <form id="jdata" name=jdata>
         <label>Name:</label>
         <input type="text" id="name" name="name" placeholder="Name" value="your name" min="1" max="15">
@@ -69,7 +69,7 @@
 </article>
 
 <article class="disable_select">
-    <h1>BIRTH Info</h1>
+    <h1>Birth Info</h1>
     <canvas id="canvas_info" tabindex="0" width="625" height="190">[ Information ]</canvas>
 </article>
 
@@ -80,6 +80,8 @@
 </article>
 
 <script>
+
+    window.onload = generate;
 
     var name,date,time,tz,lat,lon,latdir,londir,lattmp,lontmp,dn,forward=0;
     
