@@ -10,7 +10,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <script type="text/javascript" src="kundli.js"></script>
         <style>
-            body          { margin: 1px; padding: 0px; }  
+            body          { margin: 1px; padding: 0px; background: #FFFFFF; }  
             #canvas_info  { border: 0px solid #000000; outline: none; }    
             #canvas_chart { border: 0px solid #000000; outline: none; }
         </style>
@@ -19,7 +19,7 @@
 <body>
 
 <header>
-    Natal / Kundli
+    <b>Natal / Kundli</b>
 </header>
     
 
@@ -42,7 +42,7 @@
         
         <DIV id="mtz" title="Time Zone to GMT +|-&#013;East of GMT: +, and for West of GMT: -&#013;(decimal)"
         onclick="location.href='http://www.greenwichmeantime.com';"><a>TZ: </a></DIV>
-        <input type="number" id="tz" name="tz" min="-12" max="14" placeholder="+8" value ="+8" step="1"
+        <input type="number" id="tz" name="tz" min="-12" max="14" placeholder="8" value ="8" step="1"
         required>
         
         <br>
@@ -59,13 +59,13 @@
         
         <br> 
         
-        <button type="button" id="button" onclick="generate()">Generate</button>
+        <button type="button" id="button" onclick="generate()">Draw Chart & Dasha</button>
    </form>
 </section>
 
 <article class="disable_select">
     <h1>Rashi & Navamsa</h1>
-    <canvas id="canvas_chart" tabindex="1" width="625" height="210">[ Rasi D1 and Navamsa D9 ]</canvas>
+    <canvas id="canvas_chart" tabindex="1" width="625" height="220">[ Rasi D1 and Navamsa D9 ]</canvas>
 </article>
 
 <article class="disable_select">
@@ -2244,7 +2244,7 @@
         draw_houses (mychart);
         
         draw_empty_chart (mychart,canvas_chart,330,0,0.2);
-        draw_division_chart (mychart,mynavamsaz,mynavamsah,'D9');
+        draw_division_chart (mychart,mynavamsaz,mynavamsah,'');
 
         draw_info (myinfo,canvas_info,transit);
         draw_dasha (mydashinfo, dasha_info);
@@ -2279,7 +2279,7 @@
     {
         canvas.font = '8pt Arial';
         canvas.textAlign = 'center';
-        canvas.fillStyle = 'black';
+        canvas.fillStyle = 'blue';
         
         var pos=[125,53,  62,13,   26,54,   62,104, 
                  26,154,  62,195,  125,154, 188,195, 
@@ -2308,7 +2308,7 @@
     {
         canvas.font = '9pt Arial';
         canvas.textAlign = 'left';
-        canvas.fillStyle = 'black'; //404040
+        canvas.fillStyle = 'rgb(128,0,0, 1)'; //404040
         var today = new Date();
         
         canvas.clearRect (0, 0, canvas_info.width, canvas_info.height);
@@ -2359,12 +2359,12 @@
             canvas.fillText(mygrahas[i].retro, 26.5, y);
             y += 15;
         }
-        canvas.textAlign="left";
-        y = 10;
-        for (var i=0; i<=9; i++) {
-            canvas.fillText("[ "+mygrahas[i].range+" ]", 175, y);
-            y += 15;
-        }
+        // canvas.textAlign="left";
+        // y = 10;
+        // for (var i=0; i<=9; i++) {
+        //     canvas.fillText("[ "+mygrahas[i].range+" ]", 175, y);
+        //     y += 15;
+        // }
         canvas.textAlign="left";
         y = 10;
         for (var i=0; i<=9; i++) {
@@ -2444,7 +2444,7 @@
     {
         canvas.font = '9pt Arial';
         canvas.textAlign = 'left';
-        canvas.fillStyle = 'black'; //404040
+        canvas.fillStyle = 'rgba(0, 0, 0, 1)'; //404040
         var today = new Date();
         
         canvas.clearRect (0, 0, canvas_info.width, canvas_info.height);
@@ -2474,9 +2474,9 @@
     function draw_empty_chart (canvas,canvas_chart,_x,_y, lwidth) 
     {
         canvas.lineWidth = lwidth;
-        canvas.strokeStyle = '606060';
-        canvas.shadowColor="white";
-        canvas.shadowBlur = 1;
+        canvas.strokeStyle = '000000';
+        canvas.shadowColor="black";
+        canvas.shadowBlur = 0;
         
         canvas_chart.addEventListener('contextmenu',function(e) {
            e.preventDefault();
@@ -2524,6 +2524,8 @@
         var pos=[125,93,  62,43,   50,54,   111,104, 
                  50,154,  62,165,  125,117, 188,165, 
                  200,154, 139,104, 200,54,  188,43 ];
+
+        canvas.fillStyle = "rgb(0,0,0,1)";
         
         canvas.fillText(zodiac[0], pos[0]+xoffset, pos[1]);
         canvas.fillText(zodiac[1], pos[2]+xoffset, pos[3]);
@@ -2545,6 +2547,7 @@
                  26,154,  62,195,  125,154, 188,195, 
                  224,154, 189,104, 224,54,  188,13 ];
  
+        canvas.fillStyle = "rgb(139,69,19,1)";
         /*if (mybhavas[i].length > 8) 
               canvas.font = '7pt Arial';
           else 
@@ -2564,12 +2567,13 @@
         canvas.fillText(house[12], pos[22]+xoffset,pos[23]);
         
         canvas.textAlign = 'left';
-        canvas.fillText("Rashi Chart",2, 209);
+        canvas.fillStyle = "#000000"; 
+        canvas.fillText("Rashi Chart",2, 215);
         
-        canvas.textAlign = 'center';
         canvas.fillText(d, pos[0]+xoffset, 105);
         canvas.textAlign = 'left';
-        canvas.fillText("D9 - Navamsa",xoffset, 209);
+        canvas.fillStyle = "#000000"; 
+        canvas.fillText("D9 - Navamsa",xoffset, 215);
     }
     
     function draw_smile (canvas) 
