@@ -2004,7 +2004,9 @@
         for(var i=0; i<9; i++) {
             if(indexcurrent > 8) indexcurrent = 0;
             ta = tdasa[indexcurrent];
-            ma_arr.push(lord[indexcurrent] + " Dasa: " + dec2date(ta)) ;
+            // Math.abs(balance * (tdasa[indexcurrent]/solaryear))
+            // if(ta > year) {break; } 
+            ma_arr.push(lord[indexcurrent] + " Dasa: " + dec2date(Math.abs(balance * (tdasa[indexcurrent]/solaryear)))); 
             indexcurrent++;
         }        
         
@@ -2115,6 +2117,8 @@
         var balance  = ((moon - sdeg) / 13.3333);
         var lbalance = 1 - balance;
         var etime    = Math.abs(balance * (period/solaryear));
+
+        // Math.abs(balance * (tdasa[lord.indexOf(nlord)];/solaryear));
         
         var ta=0, tp=0, mlord=nlord, alord, plord, cmlord, calord, cplord,
         today=new Date(), currentmaha=0, indexcurrent=index, year;
@@ -2450,10 +2454,10 @@
         canvas.fillText("Tithi:"+calc_tithi(transit),  330, 185);
         canvas.fillText("Weekday:"+calc_day_of_the_week(transit), 330, 170); 
         
-        // if (!transit) {
-        //     canvas.fillText("Dasa:"+calc_vimsottari_dasa(false), 461, 170);
-        //     canvas.fillText("Dasa:"+calc_vimsottari_dasa(true),  461, 185);
-        // }
+        if (!transit) {
+            canvas.fillText("Dasa:"+calc_vimsottari_dasa(false), 461, 170);
+            canvas.fillText("Dasa:"+calc_vimsottari_dasa(true),  461, 185);
+        }
     }
 
 
@@ -2576,18 +2580,19 @@
           else 
               canvas.font = '8pt Arial';
         */
-        canvas.fillText(house[1], pos[0]+xoffset, pos[1]);
-        canvas.fillText(house[2], pos[2]+xoffset, pos[3]);
-        canvas.fillText(house[3], pos[4]+xoffset, pos[5]);
-        canvas.fillText(house[4], pos[6]+xoffset, pos[7]);
-        canvas.fillText(house[5], pos[8]+xoffset, pos[9]);
-        canvas.fillText(house[6], pos[10]+xoffset,pos[11]);
-        canvas.fillText(house[7], pos[12]+xoffset,pos[13]);
-        canvas.fillText(house[8], pos[14]+xoffset,pos[15]);      
-        canvas.fillText(house[9], pos[16]+xoffset,pos[17]);      
-        canvas.fillText(house[10], pos[18]+xoffset,pos[19]); 
-        canvas.fillText(house[11], pos[20]+xoffset,pos[21]); 
-        canvas.fillText(house[12], pos[22]+xoffset,pos[23]);
+        console.log(house[1]);
+        canvas.fillText(house[1].replace(/As/g, ''), pos[0]+xoffset, pos[1]);
+        canvas.fillText(house[2].replace(/As/g, ''), pos[2]+xoffset, pos[3]);
+        canvas.fillText(house[3].replace(/As/g, ''), pos[4]+xoffset, pos[5]);
+        canvas.fillText(house[4].replace(/As/g, ''), pos[6]+xoffset, pos[7]);
+        canvas.fillText(house[5].replace(/As/g, ''), pos[8]+xoffset, pos[9]);
+        canvas.fillText(house[6].replace(/As/g, ''), pos[10]+xoffset,pos[11]);
+        canvas.fillText(house[7].replace(/As/g, ''), pos[12]+xoffset,pos[13]);
+        canvas.fillText(house[8].replace(/As/g, ''), pos[14]+xoffset,pos[15]);      
+        canvas.fillText(house[9].replace(/As/g, ''), pos[16]+xoffset,pos[17]);      
+        canvas.fillText(house[10].replace(/As/g, ''), pos[18]+xoffset,pos[19]); 
+        canvas.fillText(house[11].replace(/As/g, ''), pos[20]+xoffset,pos[21]); 
+        canvas.fillText(house[12].replace(/As/g, ''), pos[22]+xoffset,pos[23]);
         
         canvas.textAlign = 'left';
         canvas.fillStyle = "#000000"; 
