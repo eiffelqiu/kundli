@@ -1952,12 +1952,35 @@
     function calc_all_vimsottari_dasa ()
     {
 
-        */
         var lord   = ["Me","Ke","Ve","Su","Mo","Ma","Ra","Ju","Sa"];
         var tdasa  = [6209.116431424950, 2556.695001174980, 7304.842860499940,
                       2191.452858149980, 3652.421430249970, 2556.695001174980,
                       6574.358574449950, 5843.874288399950, 6939.600717474940];
         var dasa_year = [17,7,20,6,10,7,18,16,19];
+
+        const dasa_seq ={
+            "Me":["Me","Ke","Ve","Su","Mo","Ma","Ra","Ju","Sa"],
+            "Ke":["Ke","Ve","Su","Mo","Ma","Ra","Ju","Sa","Me"],
+            "Ve":["Ve","Su","Mo","Ma","Ra","Ju","Sa","Me","Ke"],
+            "Su":["Su","Mo","Ma","Ra","Ju","Sa","Me","Ke","Ve"],
+            "Mo":["Mo","Ma","Ra","Ju","Sa","Me","Ke","Ve","Su"],
+            "Ma":["Ma","Ra","Ju","Sa","Me","Ke","Ve","Su","Mo"],
+            "Ra":["Ra","Ju","Sa","Me","Ke","Ve","Su","Mo","Ma"],
+            "Ju":["Ju","Sa","Me","Ke","Ve","Su","Mo","Ma","Ra"],
+            "Sa":["Sa","Me","Ke","Ve","Su","Mo","Ma","Ra","Ju"]
+        }  
+
+        const dasa_year_seq ={
+            "Me":[17,7,20,6,10,7,18,16,19],
+            "Ke":[7,20,6,10,7,18,16,19,17],
+            "Ve":[20,6,10,7,18,16,19,17,7],
+            "Su":[6,10,7,18,16,19,17,7,20],
+            "Mo":[10,7,18,16,19,17,7,20,6],
+            "Ma":[7,18,16,19,17,7,20,6,10],
+            "Ra":[18,16,19,17,7,20,6,10,7],
+            "Ju":[16,19,17,7,20,6,10,7,18],
+            "Sa":[19,17,7,20,6,10,7,18,16] 
+        }        
         
         var jd =  calc_julian_date(time.getHours(),time.getMinutes(),0,false);
         var Ts = (jd - 2415020.0)/36525.0;
@@ -1990,11 +2013,14 @@
         /*  Dasa balance
             http://www.saravali.de/articles/dasa_balance.html 
          */
+
+        Date.prototype.addMinutes = function(minutes) {
+            this.setMinutes(this.getMinutes() + minutes);
+            return this;
+        };
         var balance  = ((moon - sdeg) / 13.3333);
         var lbalance = 1 - balance;
         var etime    = Math.abs(balance * (period/solaryear));
-
-        var ma_arr = [];
 
         var ta=0, tp=0, mlord=nlord, alord, plord, cmlord, calord, cplord,
         today=new Date(), currentmaha=0, indexcurrent=index, year;
@@ -2002,10 +2028,24 @@
         var byear = (date.getFullYear()*solaryear)+((date.getMonth()+1)*30)+date.getDate();
         var tyear = ayear - byear;
 
-        console.log(indexcurrent, dasa_year[indexcurrent]);
         var _t = new Date(dec2date(etime));
+        var ma_arr = [];
+        var pa_array = [];
+        ma_arr.push(nlord + ": " +  _t.toISOString().split('T')[0] + "\t" + dasa_seq[nlord].join('-')); //
+        var j = 0;
+        var c = _t;
+        // console.log(dasa_seq[nlord][i] + " " +  c.toISOString().split('T')[0]);
+        // for(var i=0; i<9; i++) {
+        //     // 
+        //     j += dasa_year_seq[nlord][i] 
+        //     console.log(j);
+        //     var _tmp = (j / 120) * 365 * 24 * 60  ;
+        //     _t.addMinutes(_tmp)
+        //     var c = new Date(_t); 
+        //     console.log(dasa_seq[nlord][i] + " " +  c.toISOString().split('T')[0]);
+        // }
 
-        ma_arr.push(nlord + " Dasa: " + _t.toISOString().split('T')[0]);
+
         for(var i=0; i<9; i++) {
             if(indexcurrent > 8) {
                 indexcurrent = 0;
@@ -2017,10 +2057,47 @@
             var c = new Date(year + dasa_year[indexcurrent], month, day);
             _t  = c;
             indexcurrent++;  
-            ma_arr.push(lord[indexcurrent>8? 0 : indexcurrent] + " Dasa: " + c.toISOString().split('T')[0]);  
+            ma_arr.push(lord[indexcurrent>8? 0 : indexcurrent] + ": " + c.toISOString().split('T')[0]+ "\t" + dasa_seq[lord[indexcurrent>8? 0 : indexcurrent]].join('-'));  
                      
         }        
 
+/* 
+Mars Dasha:
+Me 1987-6-16  Ke 1987-9-30  Ve 1988-2-26  
+Su 1989-4-27  Mo 1989-9-2  
+Rahu Dasha:
+Ra 1990-4-3  Ju 1992-12-14  Sa 1995-5-10  
+Me 1998-3-16  Ke 2000-10-2  Ve 2001-10-21  
+Su 2004-10-21  Mo 2005-9-14  Ma 2007-3-16  
+Jupiter Dasha:
+Ju 2008-4-3  Sa 2010-5-22  Me 2012-12-2  
+Ke 2015-3-10  Ve 2016-2-14  Su 2018-10-15  
+Mo 2019-8-3  Ma 2020-12-2  Ra 2021-11-8  
+Saturn Dasha:
+Sa 2024-4-3  Me 2027-4-6  Ke 2029-12-15  
+Ve 2031-1-23  Su 2034-3-25  Mo 2035-3-7  
+Ma 2036-10-5  Ra 2037-11-14  Ju 2040-9-20  
+Mercury Dasha:
+Me 2043-4-3  Ke 2045-8-30  Ve 2046-8-27  
+Su 2049-6-27  Mo 2050-5-4  Ma 2051-10-3  
+Ra 2052-9-29  Ju 2055-4-19  Sa 2057-7-25  
+Ketu Dasha:
+Ke 2060-4-3  Ve 2060-8-30  Su 2061-10-30  
+Mo 2062-3-7  Ma 2062-10-6  Ra 2063-3-4  
+Ju 2064-3-22  Sa 2065-2-25  Me 2066-4-6  
+Venus Dasha:
+Ve 2067-4-3  Su 2070-8-3  Mo 2071-8-3  
+Ma 2073-4-3  Ra 2074-6-3  Ju 2077-6-3  
+Sa 2080-2-2  Me 2083-4-3  Ke 2086-2-1  
+Sun Dasha:
+Su 2087-4-3  Mo 2087-7-22  Ma 2088-1-21  
+Ra 2088-5-27  Ju 2089-4-21  Sa 2090-2-7  
+Me 2091-1-20  Ke 2091-11-27  Ve 2092-4-3  
+Moon Dasha:
+Mo 2093-4-3  Ma 2094-2-1  Ra 2094-9-2  
+Ju 2096-3-3  Sa 2097-7-3  Me 2099-2-2  
+Ke 2100-7-4  Ve 2101-2-2  Su 2102-10-4 
+*/
         return ma_arr;
     }    
     
@@ -2123,20 +2200,20 @@
         nowstr    += (((today.getFullYear())<1000) ? "/0" : "/") + (today.getFullYear());
         
         var nstr = "" ;
-        // nstr    += mlord; //    M.Lord
-        // nstr    += "/";
-        // nstr    += alord; //    A.Lord
-        // nstr    += "/";
-        // nstr    += plord; //    P.Lord
-        // nstr    += "     ";
+        nstr    += mlord; //    M.Lord
+        nstr    += "/";
+        nstr    += alord; //    A.Lord
+        nstr    += "/";
+        nstr    += plord; //    P.Lord
+        nstr    += "     ";
         nstr    += cmlord;// C. M.Lord
         nstr    += "/";
         nstr    += calord;// C. A.Lord
         nstr    += "/";
         nstr    += cplord;// C. P.Lord
         
-        // return d ? tstr+" "+nowstr : nstr;
-        return d ? nowstr : nstr;
+        return d ? tstr+" "+nowstr : nstr;
+        // return d ? nowstr : nstr;
     }
     
     function onmousedown (e)
@@ -2405,8 +2482,8 @@
         canvas.fillText("Weekday:"+calc_day_of_the_week(transit), 330, 170); 
         
         if (!transit) {
-            canvas.fillText("Current Dasa:"+calc_vimsottari_dasa(false), 461, 170);
-            canvas.fillText("Current Time:"+calc_vimsottari_dasa(true),  461, 185);
+            canvas.fillText("Dasa:"+calc_vimsottari_dasa(false), 461, 170);
+            canvas.fillText("Time:"+calc_vimsottari_dasa(true),  461, 185);
         }
     }
 
