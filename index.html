@@ -1951,10 +1951,13 @@
 
     function calc_all_vimsottari_dasa ()
     {
-        var lord   = ["Mercury","Ketu","Venus","Sun","Moon","Mars","Rahu","Jupiter","Saturn"];
+
+        */
+        var lord   = ["Me","Ke","Ve","Su","Mo","Ma","Ra","Ju","Sa"];
         var tdasa  = [6209.116431424950, 2556.695001174980, 7304.842860499940,
                       2191.452858149980, 3652.421430249970, 2556.695001174980,
                       6574.358574449950, 5843.874288399950, 6939.600717474940];
+        var dasa_year = [17,7,20,6,10,7,18,16,19];
         
         var jd =  calc_julian_date(time.getHours(),time.getMinutes(),0,false);
         var Ts = (jd - 2415020.0)/36525.0;
@@ -1990,90 +1993,34 @@
         var balance  = ((moon - sdeg) / 13.3333);
         var lbalance = 1 - balance;
         var etime    = Math.abs(balance * (period/solaryear));
-        
+
+        var ma_arr = [];
+
         var ta=0, tp=0, mlord=nlord, alord, plord, cmlord, calord, cplord,
         today=new Date(), currentmaha=0, indexcurrent=index, year;
         var ayear = (today.getFullYear()*solaryear)+((today.getMonth()+1)*30)+today.getDate();
         var byear = (date.getFullYear()*solaryear)+((date.getMonth()+1)*30)+date.getDate();
         var tyear = ayear - byear;
 
-        var ma_arr = [];
+        console.log(indexcurrent, dasa_year[indexcurrent]);
+        var _t = new Date(dec2date(etime));
 
-        var nbalance = (lbalance * tdasa[indexcurrent]);
-        console.log(nlord); 
-        year = (ayear-(byear+nbalance)); indexcurrent++; ta = 0; 
+        ma_arr.push(nlord + " Dasa: " + _t.toISOString().split('T')[0]);
         for(var i=0; i<9; i++) {
-            if(indexcurrent > 8) indexcurrent = 0;
-            ta = tdasa[indexcurrent];
-            // Math.abs(balance * (tdasa[indexcurrent]/solaryear))
-            if(ta > year) {break; } 
-            ma_arr.push(lord[indexcurrent] + " Dasa: " + dec2date(Math.abs(balance * (tdasa[indexcurrent]/solaryear)))); 
-            indexcurrent++;
+            if(indexcurrent > 8) {
+                indexcurrent = 0;
+            }  
+            var year = _t.getFullYear();
+            var month = _t.getMonth();
+            var day = _t.getDate();
+
+            var c = new Date(year + dasa_year[indexcurrent], month, day);
+            _t  = c;
+            indexcurrent++;  
+            ma_arr.push(lord[indexcurrent>8? 0 : indexcurrent] + " Dasa: " + c.toISOString().split('T')[0]);  
+                     
         }        
-        
-        // /* Vimsottari Antardasa */
-        // for(var i=0; i<9; i++) {
-        //     if (index > 8) index = 0;
-        //     ta += tdasa[index]/solaryear/120;
-        //     if(ta > balance) { alord = lord[index]; break; }
-        //     index++; 
-        // }   
-        // /* Vimsottari Pratyantardasa */
-        // ta = 1 - ((ta - balance) / (tdasa[index]/solaryear/120)); 
-        // for(var i=0; i<9; i++) {
-        //     if(index > 8) index = 0;
-        //     tp += tdasa[index]/solaryear/120;
-        //     if(tp > ta) { plord = lord[index]; break; } 
-        //     index++;
-        // }
-        // /* Current Vimsottari Maha Dasa */
-        // var nbalance = (lbalance * tdasa[indexcurrent]);
-        // year = (ayear-(byear+nbalance)); indexcurrent++; ta = 0; 
-        // for(var i=0; i<9; i++) {
-        //     if(indexcurrent > 8) indexcurrent = 0;
-        //     ta += tdasa[indexcurrent];
-        //     if(ta > year) { cmlord = lord[indexcurrent]; break; } 
-        //     indexcurrent++;
-        // }
 
-        // /* Current Vimsottari Antardasa */
-        // year = 1 - (ta - year)/tdasa[indexcurrent]; ta = 0;
-        // for(var i=0; i<9; i++) {
-        //     if(indexcurrent > 8) indexcurrent = 0;
-        //     ta += tdasa[indexcurrent]/solaryear/120;
-        //     if(ta > year) { calord = lord[indexcurrent]; break; } 
-        //     indexcurrent++;
-        // }
-        // /* Current Vimsottari Pratyantardasa */
-        // tp = 0; ta = 1 - ((ta - year) / (tdasa[indexcurrent]/solaryear/120)); 
-        // for(var i=0; i<9; i++) {
-        //     if(indexcurrent > 8) indexcurrent = 0;
-        //     tp += tdasa[indexcurrent]/solaryear/120;
-        //     if(tp > ta) { cplord = lord[indexcurrent]; break; } 
-        //     indexcurrent++;
-        // }
-        
-        var tstr   =  dec2date (etime);
-        
-        var nowstr = " ";
-        nowstr    += (((today.getDate())    <10)   ?  "0" :  "") + (today.getDate());
-        nowstr    += (((today.getMonth()+1) <10)   ? "/0" : "/") + (today.getMonth()+1);
-        nowstr    += (((today.getFullYear())<1000) ? "/0" : "/") + (today.getFullYear());
-        
-        var nstr = mlord; //    M.Lord
-        nstr    += "/";
-        nstr    += alord; //    A.Lord
-        nstr    += "/";
-        nstr    += plord; //    P.Lord
-        nstr    += "     ";
-        // nstr    += cmlord;// C. M.Lord
-        // nstr    += "/";
-        // nstr    += calord;// C. A.Lord
-        // nstr    += "/";
-        // nstr    += cplord;// C. P.Lord
-
-        
-        
         return ma_arr;
     }    
     
@@ -2175,19 +2122,21 @@
         nowstr    += (((today.getMonth()+1) <10)   ? "/0" : "/") + (today.getMonth()+1);
         nowstr    += (((today.getFullYear())<1000) ? "/0" : "/") + (today.getFullYear());
         
-        var nstr = mlord; //    M.Lord
-        nstr    += "/";
-        nstr    += alord; //    A.Lord
-        nstr    += "/";
-        nstr    += plord; //    P.Lord
-        nstr    += "     ";
+        var nstr = "" ;
+        // nstr    += mlord; //    M.Lord
+        // nstr    += "/";
+        // nstr    += alord; //    A.Lord
+        // nstr    += "/";
+        // nstr    += plord; //    P.Lord
+        // nstr    += "     ";
         nstr    += cmlord;// C. M.Lord
         nstr    += "/";
         nstr    += calord;// C. A.Lord
         nstr    += "/";
         nstr    += cplord;// C. P.Lord
         
-        return d ? tstr+" "+nowstr : nstr;
+        // return d ? tstr+" "+nowstr : nstr;
+        return d ? nowstr : nstr;
     }
     
     function onmousedown (e)
@@ -2456,8 +2405,8 @@
         canvas.fillText("Weekday:"+calc_day_of_the_week(transit), 330, 170); 
         
         if (!transit) {
-            canvas.fillText("Dasa:"+calc_vimsottari_dasa(false), 461, 170);
-            canvas.fillText("Dasa:"+calc_vimsottari_dasa(true),  461, 185);
+            canvas.fillText("Current Dasa:"+calc_vimsottari_dasa(false), 461, 170);
+            canvas.fillText("Current Time:"+calc_vimsottari_dasa(true),  461, 185);
         }
     }
 
