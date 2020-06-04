@@ -2033,17 +2033,20 @@
         var pa_array = [];
         ma_arr.push(nlord + ": " +  _t.toISOString().split('T')[0] + "\t" + dasa_seq[nlord].join('-')); //
         var j = 0;
+        var j1 = 0;
+        var j2 = 0;
         var c = _t;
         // console.log(dasa_seq[nlord][i] + " " +  c.toISOString().split('T')[0]);
-        // for(var i=0; i<9; i++) {
-        //     // 
-        //     j += dasa_year_seq[nlord][i] 
-        //     console.log(j);
-        //     var _tmp = (j / 120) * 365 * 24 * 60  ;
-        //     _t.addMinutes(_tmp)
-        //     var c = new Date(_t); 
-        //     console.log(dasa_seq[nlord][i] + " " +  c.toISOString().split('T')[0]);
-        // }
+        for(var i=0; i<9; i++) {
+            var th_y = 7 ;
+            j2 = dasa_year_seq[nlord][i];
+            j = ((th_y * j2 )/ 120)
+            j1 = j * 365 * 24 * 60;
+            _t.addMinutes(j1)
+            console.log(th_y, j2, j);
+            var c = new Date(_t); 
+            console.log(dasa_seq[nlord][i] + " " +  c.toISOString().split('T')[0]);
+        }
 
 
         for(var i=0; i<9; i++) {
